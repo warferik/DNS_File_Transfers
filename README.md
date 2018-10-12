@@ -2,7 +2,8 @@
 
 dns_server.py (DNS Server that base64 encodes a file and then serves that file in TXT records that are availble through DNS)
 
-Usage 
+Usage:
+
 python3 dns_server.py (FILE_TO_SERVE)
 
 -Will output command to use powershell with nslookup to transfer file, then use certutil to decode.

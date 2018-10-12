@@ -7,8 +7,8 @@ Usage
 
 -Will output command to use powershell with nslookup to transfer file, then use certutil to decode.
 
--file that is created on windows system is named "newFile"
+-File that is created on windows system is named "newFile"
 
--run mv newFile to newFile.exe and run
+-Run mv newFile to newFile.exe and run
 
 

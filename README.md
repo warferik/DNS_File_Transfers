@@ -8,8 +8,6 @@ python3 dns_server.py (FILE_TO_SERVE)
 
 -Will output command to use powershell with nslookup to transfer file, then use certutil to decode.
 
--File that is created on windows system is named "newFile"
-
--Run "mv newFile newFile.exe" and then execute file
+-File that is created on windows system is named "newFile.exe"
 
 

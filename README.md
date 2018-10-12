@@ -10,6 +10,6 @@ python3 dns_server.py (FILE_TO_SERVE)
 
 -File that is created on windows system is named "newFile"
 
--Run mv newFile to newFile.exe and run
+-Run "mv newFile newFile.exe" and then execute file
 
 

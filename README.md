@@ -3,7 +3,7 @@ Repository for ways to transfer files to Windows using built in binaries
 
 Techniques
 dns_server.py
--DNS Servers that base64 encodes a file and then servers that file in TXT records through DNS
+-DNS Server that base64 encodes a file and then server that file in TXT records that are availble through DNS
 
 Usage 
 ./dnsserv.py (FILE_TO_Serve)
